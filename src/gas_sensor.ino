@@ -6,7 +6,7 @@ const int ledRedPin = 2;
 const int ledGreenPin = 3;
 const int buzzerPin = 6;
 
-const int threshold = 300;
+const int threshold = 330;
 const int freqMin = 3450;
 const int freqMax = 3850;
 
@@ -18,8 +18,6 @@ void setup() {
   pinMode(ledRedPin, OUTPUT);
   pinMode(ledGreenPin, OUTPUT);
   pinMode(buzzerPin, OUTPUT);
-
-  digitalWrite(ledGreenPin, HIGH);
 
   lcdInitializeAnimation();
 }
@@ -46,11 +44,15 @@ void lcdInitializeAnimation() {
   lcd.print("Initializing");
 
   for (int i = 0; i < 3; i++) {
-    delay(1000);
+    delay(800);
     lcd.print(".");
   }
 
-  delay(600);
+  delay(500);
+  lcd.setCursor(0, 1);
+  lcd.print("      Done!    ");
+
+  delay(500);
   lcd.clear();
 }
 
@@ -64,6 +66,8 @@ void updateLCD() {
 void alertMode() {
   lcd.setCursor(0, 1);
   lcd.print("Status: ALERT ");
+
+  digitalWrite(ledGreenPin, LOW);
 
   for (int f = freqMin; f <= freqMax; f += 3) {
     tone(buzzerPin, f);
@@ -83,4 +87,5 @@ void normalMode() {
   lcd.print("Status: OK    ");
   noTone(buzzerPin);
   digitalWrite(ledRedPin, LOW);
+  digitalWrite(ledGreenPin, HIGH);
 }
